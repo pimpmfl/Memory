@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+
+        <div class="card breadcrumb__nav">
+            <h:form style="position: relative">
+                <p:breadCrumb homeDisplay="text">
+                    <p:menuitem value="Home" onclick="window.location.href='./welcome.xhtml'"/>
+                    <p:menuitem value="My Decks" onclick="location.reload()"/>
+                </p:breadCrumb>
+
+                <p:commandButton oncomplete="PF('newDeckDialog').show()" value="New deck" icon="pi pi-plus" styleClass="ui-button-warning" style="border: none; position: absolute; top: 50%; right: 0; transform: translateY(-64%);"/>
+
+                <p:dialog header="New Deck" id="newDeckDialog" widgetVar="newDeckDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="newDeckData">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel for="newDeckName" value="Name: " />
+                            <p:inputText id="newDeckName" value="#{deckDetailController.newDeck.deckName}" placeholder="Enter a name" required="true" />
+                            <p:outputLabel for="newDescription" value="Description: "  />
+                            <p:inputText id="newDescription" value="#{deckDetailController.newDeck.description}" placeholder="Enter a description" required="true" />
+                            <p:outputLabel for="newCategory" value="Category: " />
+                            <h:selectOneMenu id="newCategory" value="#{deckDetailController.categoryNewDeck}" required="true" style="width: 215px; height: 30px">
+                                <f:selectItem itemLabel="History" itemValue="History"/>
+                                <f:selectItem itemLabel="Geography" itemValue="Geography"/>
+                                <f:selectItem itemLabel="Computer Science" itemValue="Computer Science"/>
+                                <f:selectItem itemLabel="Economics" itemValue="Economics"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Save" action="#{deckDetailController.createNewDeck()}" oncomplete="PF('newDeckDialog').hide()" update=":deckForm:decksTable" style="background: #ECBF32; border: none"/>
+                            <p:commandButton value="Cancel" onclick="PF('newDeckDialog').hide()" styleClass="ui-button-danger"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+
+        <h:form style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <h3 style="margin: 0;">My Decks</h3>
+        </h:form>
+
+        <h:form id="deckForm" styleClass="all-decks-body">
+            <div class="decks-data-grid" style="margin-top: 10px;">
+                <p:dataGrid var="deck" value="#{deckListController.allMyDecks}" columns="5" layout="grid"
+                            rows="10" paginator="false" id="decksTable"
+                >
+                    <div class="box">
+                        <div class="infos">
+                            <h3>#{deck.deckName}</h3>
+                            <p:outputLabel value="This deck is locked." style="color: rgb(255, 0, 0); font-weight: 500; font-size: 16px; background: rgba(255, 0, 0, 0.2); width: 140px; border-radius: 5px" rendered="#{deckDetailController.isLocked(deck)}"/>
+                            <p>Category: #{deck.category.toArray()[0]}</p>
+                            <p>Author: #{deck.author.username}</p>
+                            <p>Description: #{deck.description}</p>
+                        </div>
+
+                        <div class="deck-all-buttons">
+                            <p:linkButton outcome="playDeck" action="#{deckDetailController.doPlayDeck(deck)}" icon="pi pi-play" styleClass="ui-button-success" title="Learn">
+                                <f:param name="deckId" value="#{deck.id}"/>
+                            </p:linkButton>
+
+                            <p:linkButton outcome="editDecks" action="#{deckDetailController.doEditDeck(deck)}" icon="pi pi-pencil" styleClass="ui-button-secondary" title="Edit" rendered="#{(userDetailController.isOwnerOfDeck(deck) or userDetailController.admin)}">
+                                <f:param name="deckId" value="#{deck.id}"/>
+                            </p:linkButton>
+
+                            <p:commandButton title="Delete" action="#{deckDetailController.doDeleteDeck()}" icon="pi pi-trash" styleClass="ui-button-danger" update=":deckForm:decksTable">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Publish" action="#{deckDetailController.doPublishDeck(deck)}" icon="pi pi-unlock" update=":deckForm:decksTable" rendered="#{not (deckDetailController.isPublic(deck) or deckDetailController.isLocked(deck))}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Make private" action="#{deckDetailController.doUnpublishDeck(deck)}" icon="pi pi-lock" update=":deckForm:decksTable" rendered="#{deckDetailController.isPublic(deck)}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </p:dataGrid>
+            </div>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

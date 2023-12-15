@@ -1,0 +1,12 @@
+Umgang mit fremden Decks
+
+In der Klasse "Deck" sollte ein neues Attribut hinzugefügt werden, der eine Liste von User
+speichert. Wenn der Author, das Deck veröffentlicht, soll diese Liste initialisiert werden
+und falls ein fremder User, das Deck zu seiner Liste hinzufügen will, wird er in diese 
+Liste eingespeichert. 
+
+Author löscht das Deck: 
+ - es wird durch die Liste aller fremden User iteriert und das Deck wird gelöscht
+
+Author stellt das Deck auf privat: 
+ - wird wieder durch die Liste aller fremden User iteriert und das Deck gelöscht 

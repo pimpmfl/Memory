@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content" rendered="#{sessionInfoBean.loggedIn}">
+        <div class="card breadcrumb__nav">
+            <h:form>
+                <p:breadCrumb homeDisplay="text">
+                    <p:menuitem value="Home" onclick="window.location.href='./welcome.xhtml'"/>
+                    <p:menuitem value="All Decks" onclick="location.reload()"/>
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+        <h:form style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <h3 style="margin: 0;">All Decks</h3>
+            <h4 style="margin: 0; color: #b1301d">You can play the decks only after you subscribe them.</h4>
+            <div class="ui-input-icon-left" style="margin-top: 10px">
+                <em class="pi pi-fw pi-search" />
+                <p:inputText type="search" id="search" placeholder="Search for a deck" valueChangeListener="#{deckListController.getDecksByName}" rendered="#{sessionInfoBean.loggedIn}">
+                    <f:ajax execute="search" render="deckForm" event="input" />
+                </p:inputText>
+            </div>
+        </h:form>
+
+        <h:form id="deckForm" styleClass="all-decks-body">
+            <div class="decks-data-grid" style="margin-top: 10px;">
+                <p:dataGrid var="deck" value="#{deckListController.allFilteredDecks}" columns="5" layout="grid"
+                            rows="10" paginator="false" id="decksTable">
+                    <div class="box">
+                        <div class="infos">
+                            <h3>#{deck.deckName}</h3>
+                            <p>Category: #{deck.category.toArray()[0]}</p>
+                            <p>Author: #{deck.author.username}</p>
+                            <p>Description: #{deck.description}</p>
+                        </div>
+
+                        <div class="deck-all-buttons">
+                            <p:linkButton outcome="playDeck" action="#{deckDetailController.doPlayDeck(deck)}" icon="pi pi-play" styleClass="ui-button-success" title="Learn" rendered="#{userDetailController.isOwnerOfDeck(deck) or subscribedDecksListController.checkIfSubscribed(deck)}">
+                                <f:param name="deckId" value="#{deck.id}"/>
+                            </p:linkButton>
+                            <p:linkButton outcome="editDecks" action="#{deckDetailController.doEditDeck(deck)}" icon="pi pi-pencil" styleClass="ui-button-secondary" title="Edit" rendered="#{(userDetailController.isOwnerOfDeck(deck) or userDetailController.admin)}">
+                                <f:param name="deckId" value="#{deck.id}"/>
+                            </p:linkButton>
+                            
+                            <p:commandButton title="Delete" action="#{deckDetailController.doDeleteDeck()}" icon="pi pi-trash" styleClass="ui-button-danger" update=":deckForm:decksTable" rendered="#{(userDetailController.isOwnerOfDeck(deck) or userDetailController.admin)}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Lock" action="#{deckDetailController.doLockDeck(deck)}" icon="pi pi-lock" update=":deckForm:decksTable" rendered="#{(userDetailController.admin and (not deckDetailController.isLocked(deck)))}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Subscribe" action="#{subscribedDecksDetailController.createNewSubscribedDeck(deck)}" icon="pi pi-flag-fill" styleClass="ui-button-success" update=":deckForm:decksTable" rendered="#{not userDetailController.isOwnerOfDeck(deck) and not subscribedDecksListController.checkIfSubscribed(deck)}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Unsubscribe" action="#{subscribedDecksDetailController.doDeleteSubscribedDeck(deck)}" icon="pi pi-flag" styleClass="ui-button-danger" update=":deckForm:decksTable" rendered="#{not userDetailController.isOwnerOfDeck(deck) and subscribedDecksListController.checkIfSubscribed(deck)}">
+                                <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                            </p:commandButton>
+                            <p:linkButton outcome="viewDecks" action="#{deckDetailController.doViewDeck(deck)}" icon="pi pi-eye" styleClass="ui-button" title="View" rendered="#{(not userDetailController.admin)}">
+                                <f:param name="deckId" value="#{deck.id}"/>
+                            </p:linkButton>
+
+                        </div>
+                    </div>
+                </p:dataGrid>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <div class="card breadcrumb__nav">
+            <h:form>
+                <p:breadCrumb homeDisplay="text">
+                    <p:menuitem value="Home" onclick="window.location.href='../secured/welcome.xhtml'" homeAriaLabel="Home" />
+                    <p:menuitem value="Admin Panel" onclick="location.reload()"/>
+                    <p:menuitem value="Notifications" onclick="location.reload()"/>
+                </p:breadCrumb>
+            </h:form>
+
+        </div>
+        <h:form id="sendEmails">
+            <div class="container" style="height: 500px; width: 410px;">
+                <div style="margin-top: 10px">
+                    <p:outputLabel for="emailTitle" value="Title: "/>
+                    <p:inputText id="emailTitle" value="#{emailController.email.title}" required="true" style="width: 400px"/>
+                    <p:outputLabel for="emailMessage" value="Message: " />
+                    <p:inputTextarea id="emailMessage" value="#{emailController.email.message}" rows="10" cols="50" counter="display" maxlength="300" style="margin-top: 10px"
+                                     counterTemplate="{0} characters remaining." autoResize="true" required="true"/>
+                    <h:outputText id="display" class="block" />
+                    <p:commandButton value="Send Notification" action="#{emailController.notifyEverybody}" styleClass="ui-button-warning" title="Send Notification" update=":sendEmails"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

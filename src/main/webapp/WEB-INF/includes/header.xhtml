@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:th="http://java.sun.com/jsf/composite"
+      xml:lang="en">
+
+<body>
+
+<div class="card navigation__bar">
+    <h:form rendered="#{sessionInfoBean.loggedIn}">
+        <p:growl id="messages"/>
+
+        <p:menubar styleClass="navigation__content">
+            <p:menuitem value="Home" url="../secured/welcome.xhtml" icon="pi pi-home"  />
+            <p:menuitem value="My Decks" url="../secured/myDecks.xhtml" icon="pi pi-lock" />
+            <p:menuitem value="All Decks" url="../secured/allDecks.xhtml" icon="pi pi-list" />
+
+            <f:facet name="options">
+                <div class="options">
+                    <p:megaMenu orientation="horizontal" autoDisplay="false" styleClass="ui-settings-mega-menu">
+                        <p:submenu icon="pi pi-fw pi-cog" >
+                            <p:column>
+                                <p:submenu label="Settings">
+                                    <p:menuitem value="Profile" icon="pi pi-id-card" onclick="window.location.href='/secured/profile.xhtml'"/>
+                                </p:submenu>
+                                <p:submenu label="Admin Panel" rendered="#{sessionInfoBean.currentUserRoles.toLowerCase().contains('admin')}">
+                                    <p:menuitem value="Members" icon="pi pi-users" onclick="window.location.href='/admin/users.xhtml'"/>
+                                    <p:menuitem value="Notifications" icon="pi pi-envelope" onclick="window.location.href='../../admin/notifications.xhtml'"/>
+                                    <p:menuitem value="Locked Decks" icon="pi pi-copy" onclick="window.location.href='../../admin/lockedDecks.xhtml'" />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <p:menuitem value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-warning" style="margin: 0; margin-left: 4px; background: #ECBF32; color: black !important;" url="/logout"/>
+                    </p:megaMenu>
+                </div>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <div class="card breadcrumb__nav">
+                <h:form>
+                    <p:breadCrumb homeDisplay="text">
+                        <p:menuitem value="Home" onclick="window.location.href='./welcome.xhtml'" homeAriaLabel="Home" />
+                        <p:menuitem value="Profile" onclick="location.reload()"/>
+                    </p:breadCrumb>
+                </h:form>
+            </div>
+
+            <p:panel header="Profile" style="margin-top: 10px; text-align: center">
+                <div class="card" style="display: flex; justify-content: center; align-items: center;">
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <p>#{sessionInfoBean.currentUser.username}</p>
+                        </f:facet>
+
+                        <h:outputText value="First Name"/>
+                        <h:outputText value="#{sessionInfoBean.currentUser.firstName}"/>
+
+                        <h:outputText value="Last Name"/>
+                        <h:outputText value="#{sessionInfoBean.currentUser.lastName}"/>
+
+                        <h:outputText value="Email"/>
+                        <h:outputText value="#{sessionInfoBean.currentUser.email}"/>
+
+                        <h:outputText value="Published Decks"/>
+                        <h:outputText value="#{deckListController.getAllPublishedDecksByAuthor(sessionInfoBean.currentUser).size()}"/>
+                    </p:panelGrid>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

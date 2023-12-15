@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name ="content">
+
+        <h:body onload="#{cardListController.getAllCardsInDeck(deckDetailController.setDeckToLearn())}">
+            <div class="card breadcrumb__nav" >
+                <h:form style="position: relative;">
+                    <p:breadCrumb homeDisplay="text">
+                        <p:menuitem value="Home" onclick="window.location.href='../secured/welcome.xhtml'"/>
+                        <p:menuitem value="My Decks" onclick="window.location.href='myDecks.xhtml'" />
+                        <p:menuitem value="Edit Deck" onclick="location.reload()" />
+                    </p:breadCrumb>
+                </h:form>
+            </div>
+
+            <p:panel id="deckData" header="General Infos about this Deck" style="padding-top: 10px" >
+                <div style="height: fit-content"  >
+                    <strong>Name: </strong> #{deckDetailController.deck.deckName} <p></p>
+                    <strong>Author: </strong> #{deckDetailController.deck.author.username} <p></p>
+                    <strong>Number of Cards: </strong> #{cardListController.getAllCardsInDeck(deckDetailController.setDeckToLearn()).size()}<p></p>
+                    <strong>Description: </strong>#{deckDetailController.deck.description}<p></p>
+                    <strong>Category: </strong>#{deckDetailController.deck.category}<p></p>
+                    <strong>new Cards: </strong>#{cardDetailController.cardsToRepeatByDeck(deckDetailController.deck)}<p></p>
+                    <strong>Cards To Repeat: </strong>#{cardDetailController.cardsToRepeatByDeck(deckDetailController.deck)}<p></p>
+                    <strong>is reversible: </strong>#{deckDetailController.deck.reversibleDeck}<p></p>
+                </div>
+            </p:panel>
+
+
+            <h:form id="cardForm" style="margin-top: 10px;" >
+                <p:dataTable id="cardTable" var="card" value="#{cardListController.filteredCards}"  editable="true" paginator="true" rows ="10" paginatorPosition="bottom" rowkey="${card.id}">
+                    <p:column headerText="Question" sortBy="#{card.question}" filterBy="#{card.question}" filterMatchMode="contains">
+                        <h:outputText value="#{card.question}"/>
+                    </p:column>
+
+                    <p:column headerText="Answer" sortBy="#{card.answer}" filterBy="#{card.answer}" filterMatchMode="contains">
+                        <h:outputText value="#{card.answer}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </h:body>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Repeat Subscribed Decks">
+                <h:form id="deckToLearnForm" styleClass="all-decks-body">
+
+                    <p:dataGrid var="deckToLearn" value="#{subscribedDecksListController.myFollowedDecks}" columns="5" layout="grid"
+                                rows="10" paginator="false" id="decksToLearnTable">
+                        <div class="box">
+                            <div class="infos">
+                                <h3>#{deckToLearn.deck.deckName}</h3>
+                                <p>Category: #{deckToLearn.deck.category.toArray()[0]}</p>
+                                <p>Author: #{deckToLearn.deck.author.username}</p>
+                                <p>Description: #{deckToLearn.deck.description}</p>
+                            </div>
+
+                            <div class="deck-all-buttons" style="width: fit-content">
+                                <p:linkButton outcome="playDeck" action="#{deckDetailController.doPlayDeck(deckToLearn)}" icon="pi pi-play" styleClass="ui-button-success" title="Learn">
+                                    <f:param name="deckId" value="#{deckToLearn.deck.id}"/>
+                                </p:linkButton>
+                                <p:linkButton outcome="viewDecks" action="#{deckDetailController.doViewDeck(deckToLearn)}" icon="pi pi-eye" styleClass="ui-button" title="View">
+                                    <f:param name="deckId" value="#{deckToLearn.deck.id}"/>
+                                </p:linkButton>
+                            </div>
+                        </div>
+                    </p:dataGrid>
+                </h:form>
+            </p:panel>
+
+            <p:panel header="Repeat Own Decks" style="padding-top: 20px">
+                <h:form id="deckForm" styleClass="all-decks-body">
+
+                        <p:dataGrid var="deck" value="#{deckListController.allMyDecks}" columns="5" layout="grid"
+                                    rows="10" paginator="false" id="decksTable">
+                            <div class="box">
+                                <div class="infos">
+                                    <h3>#{deck.deckName}</h3>
+                                    <p>Category: #{deck.category.toArray()[0]}</p>
+                                    <p>Author: #{deck.author.username}</p>
+                                    <p>Description: #{deck.description}</p>
+                                </div>
+
+                                <div class="deck-all-buttons" style="width: fit-content">
+                                    <p:linkButton outcome="playDeck" action="#{deckDetailController.doPlayDeck(deck)}" icon="pi pi-play" styleClass="ui-button-success" title="Learn">
+                                        <f:param name="deckId" value="#{deck.id}"/>
+                                    </p:linkButton>
+                                    <p:linkButton outcome="viewDecks" action="#{deckDetailController.doViewDeck(deck)}" icon="pi pi-eye" styleClass="ui-button" title="View">
+                                        <f:param name="deckId" value="#{deck.id}"/>
+                                    </p:linkButton>
+                                </div>
+                            </div>
+                        </p:dataGrid>
+                </h:form>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

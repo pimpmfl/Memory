@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+
+    <ui:define name="content">
+        <link rel="stylesheet" type="text/css" href="./_resources/login/style.css"/>
+
+        <div class="login-body">
+            <div class="login-content">
+                <div class="login-panel">
+                    <div class="login-panel-content">
+                        <div class="logo">
+                            <img id="flash-cards-logo" src="./_resources/main/card.png" alt=""/>
+                        </div>
+                        <h1>Sign in to Memory</h1>
+                        <p>Welcome, please use the form to sign in.</p>
+                        <form id="login-form" action="#{request.contextPath}/login" method="post">
+                            <div class="login-input-wrapper">
+                                <label class="ui-outputlabel ui-widget" for="username">Username
+                                    <p:inputText id="username" type="text" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" placeholder="Enter your username" role="textbox" aria-disabled="false" aria-readonly="false"/>
+                                </label>
+                                <i class="pi pi-user"/>
+                            </div>
+
+                            <div class="login-input-wrapper" >
+                                <label class="ui-outputlabel ui-widget" for="password">Password
+                                    <p:inputText id="password" type="password" class="ui-password ui-inputfield ui-widget ui-state-default ui-corner-all" placeholder="Enter your password" role="textbox" aria-disabled="false" aria-readonly="false"/>
+                                </label>
+                                <i class="pi pi-lock"/>
+                            </div>
+                            <div class="login-input-wrapper" style ="text-align: center">
+                                <p:outputLabel value="Username or Password incorrect" styleClass="red" rendered="${!empty param['error']}" />
+                            </div>
+
+
+                            <button type="submit"  id="login-button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                <span class="ui-button-text">Login</span>
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+</ui:composition>

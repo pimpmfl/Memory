@@ -1,0 +1,8 @@
+Meilenstein 0: 04.12.2022 : UML Klassendiagramm, Projektplan mit Meilensteine, Umgang und Verwaltung fremder Decks, UI-Skizzierung, Sonarqube
+Meilenstein 1: 12.12.2022 : Grundstruktur der Klassen steht, Entitätsklassen, Interfaces mit Methoden passen ungefähr und erste Tests werden bereits ausgeführt
+Meilenstein 2: 09.01.2023 : Hauptfunktionen Front und Backend umgesetzt: Website ist funktionsfähig und User kann Decks erstellen, bearbeiten, durchforsten etc.
+Meilenstein 3: 16.01.2023 : Admin Rolle umgesetzt, gesamtes System steht und ist funktionstüchtig. Weitere Tests werden durchgeführt
+Meilenstein 4: 23.01.2023 : Finales Testing, Extras wie Guest und spezielle Suche nach Kategorie - vielleicht noch weitere Extras einbauen
+
+*Meilensteine können sich aufgrund des Aufwands, die ein bes. Teil des Projekts in Anspruch nimmt, minimal ändern. Es sollte aber möglich sein die Meilensteine im Großen und Ganzen
+einzuhalten und somit einem strikten Zeitplan zu folgen, um zum Schluss ein fertiges Produkt zu erhalten.

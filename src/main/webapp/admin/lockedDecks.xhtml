@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+   <ui:define name="content">
+
+      <div class="card breadcrumb__nav">
+         <h:form>
+            <p:breadCrumb homeDisplay="text">
+               <p:menuitem value="Home" onclick="window.location.href='../secured/welcome.xhtml'"/>
+               <p:menuitem value="Admin Panel" onclick="location.reload()"/>
+               <p:menuitem value="Locked Decks" onclick="location.reload()"/>
+            </p:breadCrumb>
+         </h:form>
+      </div>
+
+      <h:form style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+         <h3 style="margin: 0;">Locked Decks</h3>
+      </h:form>
+
+      <h:form id="deckForm" styleClass="all-decks-body">
+         <div class="decks-data-grid" style="margin-top: 10px;">
+            <p:dataGrid var="deck" value="#{deckListController.allLockedDecks}" columns="5" layout="grid"
+                        rows="10" paginator="false" id="decksTable"
+            >
+               <div class="box">
+                  <div class="infos">
+                     <h3>#{deck.deckName}</h3>
+                     <p>Category: #{deck.category.toArray()[0]}</p>
+                     <p>Author: #{deck.author.username}</p>
+                     <p>Description: #{deck.description}</p>
+                  </div>
+
+                  <div class="deck-all-buttons">
+                     <p:commandButton type="button" styleClass="ui-button-success" icon ="pi pi-play" title="Learn" update=":deckForm:decksTable">
+                        <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                     </p:commandButton>
+
+                     <p:commandButton type="button" styleClass="ui-button-secondary" icon ="pi pi-pencil" title="Edit" update=":deckForm:decksTable" >
+                        <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                     </p:commandButton>
+
+                     <p:commandButton title="Delete" action="#{deckDetailController.doDeleteDeck()}" icon="pi pi-trash" styleClass="ui-button-danger" update=":deckForm:decksTable">
+                        <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                     </p:commandButton>
+
+                     <p:commandButton title="Unlock" action="#{deckDetailController.doUnlockDeck(deck)}" icon="pi pi-unlock" update=":deckForm:decksTable">
+                        <f:setPropertyActionListener value="#{deck}" target="#{deckDetailController.deck}" />
+                     </p:commandButton>
+                  </div>
+               </div>
+            </p:dataGrid>
+         </div>
+      </h:form>
+
+
+   </ui:define>
+</ui:composition>
