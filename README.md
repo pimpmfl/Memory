@@ -26,5 +26,5 @@ also be Java SDK 17. Afterwards run 'mvn spring-boot:run' in your terminal and w
 
 
 ## Additional Information
-- You can find UMLs, milestones, scetches and other documents in g4t4/utils/
+- You can find UMLs, milestones, sketches and other documents in Memory/utils/
 
